@@ -1,9 +1,12 @@
 <template>
+
+<template v-if="entry">  
   <div class="entry-title d-flex justify-content-between p-2">
+    
     <div>
-        <span class="text-success fs-3 fw-bold">15</span>
-        <span class="mx-1 fs-3">Julio</span>
-        <span class="mx-2 fs-4 fw-light">2021, jueves</span>
+        <span class="text-success fs-3 fw-bold">{{ day }}</span>
+        <span class="mx-1 fs-3">{{ month }}</span>
+        <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
     </div>
 
     <div>
@@ -27,21 +30,24 @@
         ></textarea>
     </div>
     
-    <Fab 
-        icon="fa-save"
-    />
     <img    src="https://es.web.img3.acsta.net/pictures/15/05/06/16/13/020977.jpg" 
             alt="entry-picture"
             class="img-thumbnail"
             />
+
+    </template>
+
+    <Fab 
+        icon="fa-save"
+    />
 
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
 import { mapGetters } from 'vuex';
-import getDayMonthYear from '../helpers/getDayMonthYear';
 
+import getDayMonthYear from '../helpers/getDayMonthYear';
 
 export default {
     props: {
@@ -51,11 +57,10 @@ export default {
         }
     },
     components: {
-    Fab: defineAsyncComponent(() => import("../components/Fab.vue"))
+        Fab: defineAsyncComponent(() => import('../components/Fab.vue'))
     },
 
     data(){
-
         return {
             entry:null
         }     
@@ -76,7 +81,7 @@ export default {
             return yearDay
         } 
     },    
-    
+
     methods: {
         loadEntry() {
             const entry = this.getEntryById( this.id )
@@ -88,6 +93,12 @@ export default {
 
     created() {
         this.loadEntry()
+    },
+
+    watch: {
+        id() {
+            this.loadEntry()
+        }
     }
 
 
@@ -95,6 +106,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    
     textarea {
         font-size: 20px;
         border: none;
@@ -112,4 +124,5 @@ export default {
         right: 20px;
         box-shadow: 0px 5px 10px rgba($color: #0000, $alpha:0.2);
     }
-</style>
+    
+    </style>

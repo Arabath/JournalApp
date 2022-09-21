@@ -32,7 +32,6 @@ export default {
         entriesByTerm() {
             return this.getEntriesByTerm( this.term )}
         },
-
     data() {
         return {
             term: ''
