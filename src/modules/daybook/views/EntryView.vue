@@ -22,6 +22,7 @@
     <hr>
     <div class="d-flex flex-column px-3 h-75">
            <textarea
+            v-model="entry.text"
             placeholder="¿Que sucedio hoy?"
         ></textarea>
     </div>
@@ -38,11 +39,58 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
+import { mapGetters } from 'vuex';
+import getDayMonthYear from '../helpers/getDayMonthYear';
+
 
 export default {
+    props: {
+        id:{
+            tpye:String,
+            required: true
+        }
+    },
     components: {
     Fab: defineAsyncComponent(() => import("../components/Fab.vue"))
+    },
+
+    data(){
+
+        return {
+            entry:null
+        }     
+    },
+
+    computed:{
+        ...mapGetters('journal', ['getEntryById']),
+        day() {
+            const { day } = getDayMonthYear( this.entry.date )
+            return day
+        },
+        month() {
+            const { month } = getDayMonthYear( this.entry.date )
+            return month
+        },
+        yearDay() {
+            const { yearDay } = getDayMonthYear( this.entry.date )
+            return yearDay
+        } 
+    },    
+    
+    methods: {
+        loadEntry() {
+            const entry = this.getEntryById( this.id )
+            if( !entry ) return this.$router.push({ name: 'no-entry' })
+
+            this.entry = entry
+        }
+    },
+
+    created() {
+        this.loadEntry()
     }
+
+
 }
 </script>
 
