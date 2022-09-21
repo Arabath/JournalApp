@@ -11,8 +11,9 @@
 
     <div class="entry-scrollarea">
         <Entry
-        v-for="item in getEntriesByTerm"
-        :key="item"
+        v-for="entry in entriesByTerm"
+        :key="entry.id"
+        :entry="entry"
         />
     </div>
   </div>
@@ -28,10 +29,10 @@ export default {
     },
     computed: {
         ...mapGetters('journal', ['getEntriesByTerm']),
-        getEntriesByTerm() {
-            return this.getEntriesByTerm( this.term )
-        }
-    },
+        entriesByTerm() {
+            return this.getEntriesByTerm( this.term )}
+        },
+
     data() {
         return {
             term: ''
