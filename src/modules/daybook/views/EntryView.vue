@@ -39,20 +39,22 @@
 
     <Fab 
         icon="fa-save"
+        @on:click="saveEntry"
     />
 
 </template>
 
 <script>
+
 import { defineAsyncComponent } from 'vue'
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import getDayMonthYear from '../helpers/getDayMonthYear';
 
 export default {
     props: {
         id:{
-            tpye:String,
+            type: String,
             required: true
         }
     },
@@ -83,12 +85,51 @@ export default {
     },    
 
     methods: {
+        ...mapActions('journal', ['updateEntry', 'CreateEntry']),
+
         loadEntry() {
-            const entry = this.getEntryById( this.id )
-            if( !entry ) return this.$router.push({ name: 'no-entry' })
+
+            let entry;
+            
+            if( this.id === 'new' ) 
+            {
+
+                entry = {
+                    text:'',
+                    date: new Date().getTime()
+                }
+
+            }else{
+                entry = this.getEntryById( this.id )
+                if( !entry ) return this.$router.push({ name: 'no-entry' })
+            }
 
             this.entry = entry
-        }
+
+        },
+        async saveEntry() {
+            //console.log('Guardando entrada')
+            //console.log( this.entry )
+
+            if(this.entry.id) {
+                // Actualizar
+                await this.updateEntry( this.entry )
+            } else {
+                //Crear nueva tarea
+                
+                const id = await this.CreateEntry( this.entry )
+
+                //console.log('Post de una nueva entrada')
+
+                this.$router.push({ name:'entry', params:{ id } })
+
+                //Await action
+
+
+                // Redirección
+            }
+            
+         }  
     },
 
     created() {
