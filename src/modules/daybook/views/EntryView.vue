@@ -48,6 +48,12 @@
             /> -->
 
     <img
+        v-if="entry.picture && !localImage === null"
+        :src="entry.picture"
+        alt="entry-picture"
+        class="img-thumbnail"
+    >            
+    <img
         v-if="localImage"
         :src="localImage"
         alt="entry-picture"
@@ -70,6 +76,7 @@ import { mapGetters, mapActions } from 'vuex';
 import Swal from 'sweetalert2'
 
 import getDayMonthYear from '../helpers/getDayMonthYear';
+import uploadImage from '../helpers/uploadImage'
 
 export default {
     props: {
@@ -138,7 +145,9 @@ export default {
                 title: 'Espere por favor',
                 allowOutsideClick: false
             })    
-            Swal.showLoading
+            Swal.showLoading()
+
+            const picture = await uploadImage( this.file )
 
             if(this.entry.id) {
                 // Actualizar
@@ -154,6 +163,8 @@ export default {
                 //Await action
                 // Redirección
             }
+
+            this.file = null
             Swal.fire('Guardado', 'Entrada registrada con éxito', 'success')
          },
          async onDeleteEntry() {
