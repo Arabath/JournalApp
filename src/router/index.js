@@ -1,6 +1,6 @@
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/Home.vue'
 
 import daybookRouter from '@/modules/daybook/router'
 const routes = [
@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path:'/daybook',
