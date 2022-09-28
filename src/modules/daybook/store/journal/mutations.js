@@ -18,5 +18,5 @@ export const addEntry = ( state, entry ) =>{
 export const deleteEntry = ( state, id ) => {
     // remover del state.entries por ID
 
-    state.entries = state.entries.filter( e=> e.id !== id )
+    state.entries = state.entries.filter( entry => entry.id !== id )
 }
